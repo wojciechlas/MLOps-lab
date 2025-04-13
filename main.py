@@ -1,6 +1,13 @@
 import argparse
 from dotenv import load_dotenv
 from settings import Settings
+import yaml
+
+
+def load_secrets(path="secrets.yaml"):
+    with open(path, "r") as file:
+        secrets = yaml.safe_load(file)
+    return secrets
 
 
 def export_envs(environment: str = "dev") -> None:
@@ -33,3 +40,6 @@ if __name__ == "__main__":
 
     print("APP_NAME: ", settings.APP_NAME)
     print("ENVIRONMENT: ", settings.ENVIRONMENT)
+
+    secrets = load_secrets()
+    print("API_KEY: ", secrets["fake_api"])
