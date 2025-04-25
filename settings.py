@@ -1,6 +1,6 @@
 # settings.py
 from pydantic_settings import BaseSettings
-from pydantic import field_validator, ValidationError
+from pydantic import field_validator
 
 
 class Settings(BaseSettings):
@@ -11,10 +11,12 @@ class Settings(BaseSettings):
     def validate_environment(cls, value: str):
         if value in ["dev", "test", "prod"]:
             return value
-        raise ValidationError
+        raise ValueError(
+            f"Invalid environment: {value}. Must be one of ['dev', 'test', 'prod']"
+        )
 
     @field_validator("APP_NAME")
     def validate_app_name(cls, value: str):
         if value == "":
-            raise ValidationError
+            raise ValueError("APP_NAME cannot be empty")
         return value
